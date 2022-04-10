@@ -11,8 +11,13 @@
     },
     "devDependencies": {
         "axios": "^0.25",
+        "eslint": "^8.7.0",
+        "eslint-plugin-vue": "^8.4.0",
         "laravel-mix": "^6.0.6",
         "lodash": "^4.17.19",
         "postcss": "^8.1.14"
+    },
+    "dependencies": {
+        "vue": "^3.2.31"
     }
 }
