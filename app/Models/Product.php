@@ -12,9 +12,9 @@ class Product extends Model
 {
     use HasFactory;
 
-    public function versions(): BelongsToMany
+    public function version(): BelongsTo
     {
-        return $this->belongsToMany(Version::class);
+        return $this->belongsTo(Version::class);
     }
 
     public function type(): BelongsTo

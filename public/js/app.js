@@ -13765,17 +13765,21 @@ module.exports = {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.runtime.esm-bundler.js");
+/* harmony import */ var _components__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./components */ "./resources/js/components.js");
+// eslint-disable-next-line no-undef
+__webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
+
  // eslint-disable-next-line no-undef
+//require('./components')
 
-__webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js"); // eslint-disable-next-line no-undef
+ //app.use(components)
 
-
-__webpack_require__(/*! ./components */ "./resources/js/components.js");
-
-new vue__WEBPACK_IMPORTED_MODULE_0__["default"]({
+var app = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createApp)(_components__WEBPACK_IMPORTED_MODULE_1__["default"]);
+app.mount('#app');
+/*new Vue({
   el: '#app',
-  data: {}
-});
+  data: {},
+})*/
 
 /***/ }),
 
