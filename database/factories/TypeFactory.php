@@ -26,7 +26,8 @@ class TypeFactory extends Factory
                 break;
             }
         }
-        abort_unless($label, 403, "You can't create more Type");
+
+      //  abort_unless($label, 403, "You can't create more Type");
 
         return ['label' => $label];
     }

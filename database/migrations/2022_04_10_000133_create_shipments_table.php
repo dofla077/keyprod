@@ -18,8 +18,8 @@ return new class extends Migration
             $table->id();
             $table->string('tracking');
             $table->string('state')->default(ShipmentState::InProgress->value);
-            $table->timestamp('shipping_at')->nullable();
 
+            $table->timestamp('shipping_at')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

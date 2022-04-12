@@ -5,7 +5,7 @@ namespace App\Models;
 use App\Enums\ShipmentState;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\MorphToMany;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Shipment extends Model
@@ -16,9 +16,15 @@ class Shipment extends Model
         'state' => ShipmentState::class
     ];
 
-    public function Products(): MorphToMany
+    public function orders(): BelongsToMany
     {
-        return $this->morphToMany(Product::class, 'producttable')
-            ->withPivot('product_state', 'uniqueness', 'weight');
+        return $this->belongsToMany(Order::class, 'orders_products_shipments')
+            ->withPivot('product_state', 'weight');
+    }
+
+    public function Products(): BelongsToMany
+    {
+        return $this->belongsToMany(Product::class, 'orders_products_shipments')
+            ->withPivot('product_state', 'weight');
     }
 }

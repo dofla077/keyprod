@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Enums\OrderState;
+use App\Models\Product;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
