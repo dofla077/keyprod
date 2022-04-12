@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Order;
 use App\Services\OrderService;
 
 class OrderController extends Controller
@@ -19,6 +18,11 @@ class OrderController extends Controller
         $this->orderService = $orderService;
     }
 
+    /**
+     * Index
+     *
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     */
     public function index()
     {
         return view('orders.index', ['orders' => $this->orderService->getOrders()]);
