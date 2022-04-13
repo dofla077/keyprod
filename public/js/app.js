@@ -2360,6 +2360,16 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: 'RelatedProducts',
   props: {
@@ -2405,37 +2415,26 @@ __webpack_require__.r(__webpack_exports__);
         name: 'Coo',
         image: 'https://www.gravatar.com/avatar/b17065ea1655f1e3283aac8d8fc16019?s=48&d=identicon&r=PG'
       }],
-
-      /*headers: [
-        {
-          text: 'Dessert (100g serving)',
-          align: 'start',
-          sortable: false,
-          value: 'name',
-        },
-        { text: 'Calories', value: 'calories' },
-        { text: 'Fat (g)', value: 'fat' },
-        { text: 'Carbs (g)', value: 'carbs' },
-        { text: 'Protein (g)', value: 'protein' },
-        { text: 'Actions', value: 'actions', sortable: false },
-      ],*/
       desserts: [],
       orderProductsItems: [],
       editedIndex: -1,
-      addProducts: [],
+      addItem: {
+        order_id: null,
+        product: '',
+        state: '',
+        weight: 0
+      },
       editedItem: {
-        label: '',
-        type: '',
-        version: '',
-        identified: '',
-        updated_at: ''
+        order_id: null,
+        product: '',
+        state: '',
+        weight: 0
       },
       defaultItem: {
-        label: '',
-        type: '',
-        version: '',
-        identified: '',
-        updated_at: ''
+        order_id: null,
+        product: '',
+        state: '',
+        weight: 0
       }
     };
   },
@@ -2448,80 +2447,6 @@ __webpack_require__.r(__webpack_exports__);
     this.orderProductsItems = this.orderProducts ? this.orderProducts : [];
   },
   methods: {
-    initialize: function initialize() {
-      /*this.desserts = [
-        {
-          name: 'Frozen Yogurt',
-          calories: 159,
-          fat: 6.0,
-          carbs: 24,
-          protein: 4.0,
-        },
-        {
-          name: 'Ice cream sandwich',
-          calories: 237,
-          fat: 9.0,
-          carbs: 37,
-          protein: 4.3,
-        },
-        {
-          name: 'Eclair',
-          calories: 262,
-          fat: 16.0,
-          carbs: 23,
-          protein: 6.0,
-        },
-        {
-          name: 'Cupcake',
-          calories: 305,
-          fat: 3.7,
-          carbs: 67,
-          protein: 4.3,
-        },
-        {
-          name: 'Gingerbread',
-          calories: 356,
-          fat: 16.0,
-          carbs: 49,
-          protein: 3.9,
-        },
-        {
-          name: 'Jelly bean',
-          calories: 375,
-          fat: 0.0,
-          carbs: 94,
-          protein: 0.0,
-        },
-        {
-          name: 'Lollipop',
-          calories: 392,
-          fat: 0.2,
-          carbs: 98,
-          protein: 0,
-        },
-        {
-          name: 'Honeycomb',
-          calories: 408,
-          fat: 3.2,
-          carbs: 87,
-          protein: 6.5,
-        },
-        {
-          name: 'Donut',
-          calories: 452,
-          fat: 25.0,
-          carbs: 51,
-          protein: 4.9,
-        },
-        {
-          name: 'KitKat',
-          calories: 518,
-          fat: 26.0,
-          carbs: 65,
-          protein: 7,
-        },
-      ]*/
-    },
     editItem: function editItem(item) {
       console.log('toto');
       console.log(item);
@@ -2563,10 +2488,9 @@ __webpack_require__.r(__webpack_exports__);
         console.log('nope');
         Object.assign(this.orderProductsItems[this.editedIndex], this.editedItem);
       } else {
-        console.log(this.addProducts);
+        console.log(this.addItem);
         console.log('push');
         this.submit();
-        this.orderProductsItems.push(this.editedItem);
       }
 
       this.close();
@@ -2575,14 +2499,20 @@ __webpack_require__.r(__webpack_exports__);
       var _this3 = this;
 
       var routeaction = this.submitAction;
-      var data = {
-        order_id: this.order.id,
-        products: this.addProducts
-      };
-      this.$axios.post(route(routeaction), data).then(function (response) {
+
+      if (!this.addItem.order_id) {
+        this.addItem.order_id = this.order.id;
+      }
+
+      this.$axios.post(route(routeaction), this.addItem).then(function (response) {
         console.log(response);
 
-        if (response.data.success) {// window.location = redirectionUrl
+        if (response.data) {
+          var product = response.data;
+          console.log('suucess');
+
+          _this3.orderProductsItems.push(product); // window.location = redirectionUrl
+
         } else {
           /*let errors = []
           response.data.response.forEach(function(responseMessage) {
@@ -21159,8 +21089,8 @@ var render = function () {
                   [
                     _c("v-toolbar-title", [
                       _vm._v(
-                        "\n          Order : " +
-                          _vm._s(_vm.title) +
+                        "\n          Order number : " +
+                          _vm._s(_vm.order.number) +
                           "\n        "
                       ),
                     ]),
@@ -21241,28 +21171,30 @@ var render = function () {
                                       [
                                         _c(
                                           "v-col",
-                                          { attrs: { cols: "12", sm: "6" } },
-                                          [
-                                            _c("v-subheader", {
-                                              domProps: {
-                                                textContent: _vm._s(
-                                                  "Multiple (Chips) with persistent hint"
-                                                ),
-                                              },
-                                            }),
-                                          ],
-                                          1
-                                        ),
-                                        _vm._v(" "),
-                                        _c(
-                                          "v-col",
                                           { attrs: { cols: "12", lg: "8" } },
                                           [
+                                            _c("v-text-field", {
+                                              attrs: {
+                                                label: "weight",
+                                                required: "",
+                                              },
+                                              model: {
+                                                value: _vm.addItem.weight,
+                                                callback: function ($$v) {
+                                                  _vm.$set(
+                                                    _vm.addItem,
+                                                    "weight",
+                                                    $$v
+                                                  )
+                                                },
+                                                expression: "addItem.weight",
+                                              },
+                                            }),
+                                            _vm._v(" "),
                                             _c("v-select", {
                                               attrs: {
                                                 items: _vm.products,
-                                                label: "Standard",
-                                                multiple: "",
+                                                label: "Select product",
                                                 "persistent-hint": "",
                                               },
                                               scopedSlots: _vm._u([
@@ -21333,13 +21265,51 @@ var render = function () {
                                                 },
                                               ]),
                                               model: {
-                                                value: _vm.addProducts,
+                                                value: _vm.addItem.product,
                                                 callback: function ($$v) {
-                                                  _vm.addProducts = $$v
+                                                  _vm.$set(
+                                                    _vm.addItem,
+                                                    "product",
+                                                    $$v
+                                                  )
                                                 },
-                                                expression: "addProducts",
+                                                expression: "addItem.product",
                                               },
                                             }),
+                                            _vm._v(" "),
+                                            _c(
+                                              "v-radio-group",
+                                              {
+                                                attrs: { row: "" },
+                                                model: {
+                                                  value: _vm.addItem.state,
+                                                  callback: function ($$v) {
+                                                    _vm.$set(
+                                                      _vm.addItem,
+                                                      "state",
+                                                      $$v
+                                                    )
+                                                  },
+                                                  expression: "addItem.state",
+                                                },
+                                              },
+                                              [
+                                                _c("v-radio", {
+                                                  attrs: {
+                                                    label: "To prepare",
+                                                    value: "1",
+                                                  },
+                                                }),
+                                                _vm._v(" "),
+                                                _c("v-radio", {
+                                                  attrs: {
+                                                    label: "Prepared",
+                                                    value: "2",
+                                                  },
+                                                }),
+                                              ],
+                                              1
+                                            ),
                                           ],
                                           1
                                         ),

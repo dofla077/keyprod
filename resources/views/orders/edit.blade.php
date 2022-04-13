@@ -8,6 +8,5 @@
         :products="{{ $products }}"
         :headers="{{ $headers }}"
         submit-action="orders.products.add"
-        title="TOTOT"
     />
 @endsection

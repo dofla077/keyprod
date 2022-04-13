@@ -47,13 +47,14 @@ class OrderController extends Controller
     }
 
     /**
+     * Add product to order
+     *
      * @param Request $request
      * @param AssociatesProductsToOrder $associatesProductsToOrder
-     * @return void
+     * @return array
      */
     public function addProducts(Request $request, AssociatesProductsToOrder $associatesProductsToOrder)
     {
-        $associatesProductsToOrder($request);
-        dd($request->all());
+        return $associatesProductsToOrder($request);
     }
 }

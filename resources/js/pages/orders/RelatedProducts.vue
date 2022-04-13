@@ -11,7 +11,7 @@
           flat
         >
           <v-toolbar-title>
-            Order : {{ title }}
+            Order number : {{ order.number }}
           </v-toolbar-title>
           <v-divider
             class="mx-4"
@@ -44,17 +44,16 @@
               <v-card-text>
                 <v-container>
                   <v-row>
-                    <v-col
-                      cols="12"
-                      sm="6"
-                    >
-                      <v-subheader v-text="'Multiple (Chips) with persistent hint'" />
-                    </v-col>
-
                     <v-col cols="12" lg="8">
+                      <v-text-field
+                        v-model="addItem.weight"
+                        label="weight"
+                        required
+                      />
+
                       <v-select
-                        v-model="addProducts"
-                        :items="products" label="Standard" multiple
+                        v-model="addItem.product"
+                        :items="products" label="Select product"
                         persistent-hint
                       >
                         <template #selection="{ item, index }">
@@ -68,6 +67,17 @@
                           </qr-code> {{ item.label }}
                         </template>
                       </v-select>
+
+                      <v-radio-group v-model="addItem.state" row>
+                        <v-radio
+                          label="To prepare"
+                          value="1"
+                        />
+                        <v-radio
+                          label="Prepared"
+                          value="2"
+                        />
+                      </v-radio-group>
                     </v-col>
                   </v-row>
                 </v-container>
@@ -167,37 +177,29 @@ export default {
       { name: 'Foo', image: 'https://www.gravatar.com/avatar/b17065ea1655f1e3283aac8d8fc16019?s=48&d=identicon&r=PG'},
       { name: 'Bar', image: 'https://www.gravatar.com/avatar/b17065ea1655f1e3283aac8d8fc16019?s=48&d=identicon&r=PG'},
       { name: 'Hoo', image: 'https://www.gravatar.com/avatar/b17065ea1655f1e3283aac8d8fc16019?s=48&d=identicon&r=PG'},
-      { name: 'Coo', image: 'https://www.gravatar.com/avatar/b17065ea1655f1e3283aac8d8fc16019?s=48&d=identicon&r=PG'}],
-    /*headers: [
-      {
-        text: 'Dessert (100g serving)',
-        align: 'start',
-        sortable: false,
-        value: 'name',
-      },
-      { text: 'Calories', value: 'calories' },
-      { text: 'Fat (g)', value: 'fat' },
-      { text: 'Carbs (g)', value: 'carbs' },
-      { text: 'Protein (g)', value: 'protein' },
-      { text: 'Actions', value: 'actions', sortable: false },
-    ],*/
+      { name: 'Coo', image: 'https://www.gravatar.com/avatar/b17065ea1655f1e3283aac8d8fc16019?s=48&d=identicon&r=PG'}
+    ],
+
     desserts: [],
     orderProductsItems: [],
     editedIndex: -1,
-    addProducts: [],
+    addItem: {
+      order_id: null,
+      product: '',
+      state: '',
+      weight: 0
+    },
     editedItem: {
-      label: '',
-      type: '',
-      version: '',
-      identified: '',
-      updated_at: '',
+      order_id: null,
+      product: '',
+      state: '',
+      weight: 0
     },
     defaultItem: {
-      label: '',
-      type: '',
-      version: '',
-      identified: '',
-      updated_at: '',
+      order_id: null,
+      product: '',
+      state: '',
+      weight: 0
     },
   }),
   computed: {
@@ -209,81 +211,6 @@ export default {
     this.orderProductsItems = this.orderProducts ? this.orderProducts : []
   },
   methods: {
-    initialize () {
-      /*this.desserts = [
-        {
-          name: 'Frozen Yogurt',
-          calories: 159,
-          fat: 6.0,
-          carbs: 24,
-          protein: 4.0,
-        },
-        {
-          name: 'Ice cream sandwich',
-          calories: 237,
-          fat: 9.0,
-          carbs: 37,
-          protein: 4.3,
-        },
-        {
-          name: 'Eclair',
-          calories: 262,
-          fat: 16.0,
-          carbs: 23,
-          protein: 6.0,
-        },
-        {
-          name: 'Cupcake',
-          calories: 305,
-          fat: 3.7,
-          carbs: 67,
-          protein: 4.3,
-        },
-        {
-          name: 'Gingerbread',
-          calories: 356,
-          fat: 16.0,
-          carbs: 49,
-          protein: 3.9,
-        },
-        {
-          name: 'Jelly bean',
-          calories: 375,
-          fat: 0.0,
-          carbs: 94,
-          protein: 0.0,
-        },
-        {
-          name: 'Lollipop',
-          calories: 392,
-          fat: 0.2,
-          carbs: 98,
-          protein: 0,
-        },
-        {
-          name: 'Honeycomb',
-          calories: 408,
-          fat: 3.2,
-          carbs: 87,
-          protein: 6.5,
-        },
-        {
-          name: 'Donut',
-          calories: 452,
-          fat: 25.0,
-          carbs: 51,
-          protein: 4.9,
-        },
-        {
-          name: 'KitKat',
-          calories: 518,
-          fat: 26.0,
-          carbs: 65,
-          protein: 7,
-        },
-      ]*/
-    },
-
     editItem (item) {
 
       console.log('toto')
@@ -327,24 +254,29 @@ export default {
 
         Object.assign(this.orderProductsItems[this.editedIndex], this.editedItem)
       } else {
-        console.log(this.addProducts)
+        console.log(this.addItem)
         console.log('push')
 
         this.submit()
 
-        this.orderProductsItems.push(this.editedItem)
       }
       this.close()
     },
 
     submit() {
       let routeaction = this.submitAction
-      let data = { order_id: this.order.id ,products: this.addProducts }
-      this.$axios.post(route(routeaction), data)
+      if (!this.addItem.order_id) {
+        this.addItem.order_id = this.order.id
+      }
+      this.$axios.post(route(routeaction), this.addItem)
         .then(response => {
 
           console.log(response)
-          if (response.data.success) {
+          if (response.data) {
+            let product = response.data
+            console.log('suucess')
+
+            this.orderProductsItems.push(product)
 
             // window.location = redirectionUrl
           } else {

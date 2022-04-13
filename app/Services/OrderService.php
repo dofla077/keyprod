@@ -26,6 +26,8 @@ class OrderService
         ['text' => 'Type', 'value' => 'type'],
         ['text' => 'Version', 'value' => 'version'],
         ['text' => 'Identified', 'value' => 'identified'],
+        ['text' => 'State', 'value' => 'state'],
+        ['text' => 'Weight (kg)', 'value' => 'weight'],
         ['text' => 'Updated_at', 'value' => 'updated_at'],
     ];
 
@@ -51,6 +53,8 @@ class OrderService
     }
 
     /**
+     * Order Products
+     *
      * @param $order
      * @return array
      */
@@ -62,6 +66,8 @@ class OrderService
                 'type' => $item->type->label,
                 'version' => $item->version->label,
                 'identified' => $item->label . $item->id . $item->version->id,
+                'state' => $item->pivot->product_state,
+                'weight' => $item->pivot->weight ?? $item->weight,
                 'updated_at' => $item->updated_at->format('Y-m-d H:m:s'),
             ]),
             Product::whereNotIn('id', $order->products->pluck('id')->all())->get()->map(fn($item) => //$item->type->label->value . '_' . $item->version->label->value . '_' . $item->label . $item->id . $item->version->id
