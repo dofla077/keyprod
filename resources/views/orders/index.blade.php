@@ -4,5 +4,8 @@
 
     <kp-order-index
         :items="{{ $orders }}"
+        :headers="{{ $headers }}"
+        title="Your Orders"
+        retailurl="orders.products"
     />
 @endsection

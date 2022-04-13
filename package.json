@@ -22,6 +22,7 @@
         "vue-template-compiler": "^2.6.12"
     },
     "dependencies": {
+        "vue-qrcode-component": "^2.1.1",
         "vuetify": "^2.6.4"
     }
 }
