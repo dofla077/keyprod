@@ -2799,7 +2799,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
         if (response.data) {
           var shipment = response.data;
-          window.location = route(redirectionUrl, shipment.id);
+          window.location = route(redirectionUrl);
         }
       })["catch"](function (error) {
         _this4.errorMessages = error.response.data.errors;

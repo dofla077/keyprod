@@ -147,7 +147,7 @@ export default {
           console.log(response.data)
           if (response.data) {
             let shipment = response.data
-            window.location = route(redirectionUrl, shipment.id)
+            window.location = route(redirectionUrl)
           }
         })
         .catch(error => {

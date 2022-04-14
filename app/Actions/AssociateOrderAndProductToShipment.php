@@ -19,7 +19,7 @@ class AssociateOrderAndProductToShipment implements AssociateOrdersAndProductsTo
     {
         $order = Order::with('products')->findOrFail($request->get('order_id'));
         $product_ids = collect($request->get('products'))->pluck('id');
-        $products = $order->products()->whereIn('products.id', [2, 4, 6])->get();
+        $products = $order->products()->whereIn('products.id', $product_ids)->get();
 
         foreach ($products as $product) {
             $product->orders()->updateExistingPivot($order, [
