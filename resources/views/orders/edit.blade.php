@@ -8,5 +8,7 @@
         :products="{{ $products }}"
         :headers="{{ $headers }}"
         submit-action="orders.products.add"
+        shipment-action="orders.products.shipment"
+        redirection-url="shipments.index"
     />
 @endsection

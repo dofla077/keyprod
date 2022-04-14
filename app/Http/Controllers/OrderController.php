@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Actions\OnboardShipment;
 use App\Contracts\Actions\AssociatesProductsToOrder;
 use App\Models\Order;
 use App\Services\OrderService;
@@ -41,7 +42,9 @@ class OrderController extends Controller
     {
         $order->load('products');
 
-        list($orderProducts, $products, $headers) = $this->orderService->getProducts($order->load('products.version', 'products.type'));
+        list($orderProducts, $products, $headers) = $this->orderService->getProducts(
+            $order->load('products.version', 'products.type', 'products.shipments')
+        );
 
         return view('orders.edit', compact('order', 'orderProducts','products', 'headers'));
     }
@@ -56,5 +59,15 @@ class OrderController extends Controller
     public function addProducts(Request $request, AssociatesProductsToOrder $associatesProductsToOrder)
     {
         return $associatesProductsToOrder($request);
+    }
+
+    /**
+     * @param Request $request
+     * @param OnboardShipment $onboardShipment
+     * @return \App\Models\Shipment
+     */
+    public function addShipment(Request $request, OnboardShipment $onboardShipment)
+    {
+        return $onboardShipment($request);
     }
 }

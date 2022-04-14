@@ -6,10 +6,14 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Product extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
+
+    protected $guarded = [''];
+
 
     public function version(): BelongsTo
     {
@@ -24,10 +28,10 @@ class Product extends Model
     public function orders(): BelongsToMany
     {
         return $this->belongsToMany(Order::class, 'orders_products_shipments')
-            ->withPivot('product_state', 'weight');
+            ->withPivot('product_state', 'weight', 'shipment_id');
     }
 
-    public function Shipments(): BelongsToMany
+    public function shipments(): BelongsToMany
     {
         return $this->belongsToMany(Shipment::class, 'orders_products_shipments')
             ->withPivot('product_state', 'weight');

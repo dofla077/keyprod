@@ -12,19 +12,27 @@ class Shipment extends Model
 {
     use HasFactory, SoftDeletes;
 
+    protected $guarded = [''];
+
     protected $casts = [
         'state' => ShipmentState::class
     ];
 
+    /**
+     * @return BelongsToMany
+     */
     public function orders(): BelongsToMany
     {
         return $this->belongsToMany(Order::class, 'orders_products_shipments')
-            ->withPivot('product_state', 'weight');
+            ->withPivot('product_state', 'weight', 'product_id');
     }
 
-    public function Products(): BelongsToMany
+    /**
+     * @return BelongsToMany
+     */
+    public function products(): BelongsToMany
     {
         return $this->belongsToMany(Product::class, 'orders_products_shipments')
-            ->withPivot('product_state', 'weight');
+            ->withPivot('product_state', 'weight', 'order_id');
     }
 }

@@ -12,6 +12,9 @@ class Version extends Model
 {
     use HasFactory, SoftDeletes;
 
+    protected $guarded = [''];
+
+
     protected $casts = [
         'label' => VersionLabel::class
     ];

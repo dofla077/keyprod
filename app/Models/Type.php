@@ -12,6 +12,9 @@ class Type extends Model
 {
     use HasFactory, SoftDeletes;
 
+    protected $guarded = [''];
+
+
     protected $casts = [
         'label' => TypeLabel::class
     ];

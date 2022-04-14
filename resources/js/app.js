@@ -4,7 +4,6 @@ window.Vue = require('vue').default
 import vuetify from 'vuetify'
 import VueQRCodeComponent from 'vue-qrcode-component'
 
-
 // eslint-disable-next-line no-undef
 require('./bootstrap')
 // eslint-disable-next-line no-undef
@@ -16,7 +15,7 @@ Vue.mixin({
     route: window.route,
   },
 })
-
+// eslint-disable-next-line
 Vue.component('qr-code', VueQRCodeComponent)
 
 Vue.use(vuetify)
