@@ -19,6 +19,9 @@ class Type extends Model
         'label' => TypeLabel::class
     ];
 
+    /**
+     * @return HasMany
+     */
     public function products(): HasMany
     {
         return $this->hasMany(Product::class);

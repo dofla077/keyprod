@@ -9,7 +9,6 @@ use Illuminate\Http\Request;
 
 class OnboardShipment
 {
-
     protected AddShipments $addShipments;
     protected AssociateOrdersAndProductsToShipments $ordersAndProductsToShipments;
 

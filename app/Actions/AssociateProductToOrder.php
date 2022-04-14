@@ -20,7 +20,6 @@ class AssociateProductToOrder implements AssociatesProductsToOrder
      */
     public function __invoke(Request $request): array
     {
-
         $order = Order::findOrFail($request->get('order_id'));
 
         $productArray = $request->get('product');

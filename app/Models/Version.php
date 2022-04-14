@@ -14,11 +14,16 @@ class Version extends Model
 
     protected $guarded = [''];
 
-
+    /**
+     * @var string[]
+     */
     protected $casts = [
         'label' => VersionLabel::class
     ];
 
+    /**
+     * @return BelongsToMany
+     */
     public function products(): BelongsToMany
     {
         return $this->belongsToMany(Product::class);

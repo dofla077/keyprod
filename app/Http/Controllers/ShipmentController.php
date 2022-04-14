@@ -8,9 +8,11 @@ use Illuminate\Http\Request;
 
 class ShipmentController extends Controller
 {
-
     protected ShipmentService $shipmentService;
 
+    /**
+     * @param ShipmentService $shipmentService
+     */
     public function __construct(ShipmentService $shipmentService)
     {
         $this->shipmentService = $shipmentService;
