@@ -19,25 +19,6 @@
           :search="search"
           @click:row="rowClick"
         >
-          <template v-if="!retailurl" #item.state="props">
-            <v-edit-dialog
-              :return-value.sync="props.item.state"
-              @save="save(props.item)"
-              @cancel="cancel"
-              @close="close"
-            >
-              {{ props.item.state }}
-              <template #input>
-                <v-text-field
-                  v-model="props.item.state"
-                  :rules="[max25chars]"
-                  label="Edit"
-                  single-line
-                  counter
-                />
-              </template>
-            </v-edit-dialog>
-          </template>
           <template v-if="!retailurl" #item.tracking="props">
             <v-edit-dialog
               :return-value.sync="props.item.tracking"

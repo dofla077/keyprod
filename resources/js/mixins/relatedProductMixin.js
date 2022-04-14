@@ -45,7 +45,7 @@ export default {
       order_id: null,
       product: '',
       state: '',
-      weight: 0
+      weight: ''
     },
     editedItem: {
       order_id: null,
@@ -146,7 +146,6 @@ export default {
         .then(response => {
           console.log(response.data)
           if (response.data) {
-            let shipment = response.data
             window.location = route(redirectionUrl)
           }
         })

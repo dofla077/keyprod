@@ -2239,25 +2239,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
@@ -2444,30 +2425,34 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: 'RelatedProducts',
-  mixins: [_mixins_relatedProductMixin__WEBPACK_IMPORTED_MODULE_0__["default"]]
+  mixins: [_mixins_relatedProductMixin__WEBPACK_IMPORTED_MODULE_0__["default"]],
+  data: function data() {
+    return {
+      disabledCount: 0
+    };
+  },
+  created: function created() {
+    var self = this;
+    this.enrichedOrderProductsItem.map(function (item) {
+      if (item.disabled) self.disabledCount += 1;
+    });
+  },
+  methods: {
+    selectAllToggle: function selectAllToggle(props) {
+      if (this.shipment.length !== this.enrichedOrderProductsItem.length - this.disabledCount) {
+        this.shipment = [];
+        var self = this;
+        props.items.forEach(function (item) {
+          if (!item.disabled) {
+            self.shipment.push(item);
+          }
+        });
+      } else this.shipment = [];
+    }
+  }
 });
 
 /***/ }),
@@ -2688,7 +2673,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         order_id: null,
         product: '',
         state: '',
-        weight: 0
+        weight: ''
       },
       editedItem: {
         order_id: null,
@@ -2798,7 +2783,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         console.log(response.data);
 
         if (response.data) {
-          var shipment = response.data;
           window.location = route(redirectionUrl);
         }
       })["catch"](function (error) {
@@ -21220,74 +21204,6 @@ var render = function () {
                 [
                   !_vm.retailurl
                     ? {
-                        key: "item.state",
-                        fn: function (props) {
-                          return [
-                            _c(
-                              "v-edit-dialog",
-                              {
-                                attrs: { "return-value": props.item.state },
-                                on: {
-                                  "update:returnValue": function ($event) {
-                                    return _vm.$set(props.item, "state", $event)
-                                  },
-                                  "update:return-value": function ($event) {
-                                    return _vm.$set(props.item, "state", $event)
-                                  },
-                                  save: function ($event) {
-                                    return _vm.save(props.item)
-                                  },
-                                  cancel: _vm.cancel,
-                                  close: _vm.close,
-                                },
-                                scopedSlots: _vm._u(
-                                  [
-                                    {
-                                      key: "input",
-                                      fn: function () {
-                                        return [
-                                          _c("v-text-field", {
-                                            attrs: {
-                                              rules: [_vm.max25chars],
-                                              label: "Edit",
-                                              "single-line": "",
-                                              counter: "",
-                                            },
-                                            model: {
-                                              value: props.item.state,
-                                              callback: function ($$v) {
-                                                _vm.$set(
-                                                  props.item,
-                                                  "state",
-                                                  $$v
-                                                )
-                                              },
-                                              expression: "props.item.state",
-                                            },
-                                          }),
-                                        ]
-                                      },
-                                      proxy: true,
-                                    },
-                                  ],
-                                  null,
-                                  true
-                                ),
-                              },
-                              [
-                                _vm._v(
-                                  "\n            " +
-                                    _vm._s(props.item.state) +
-                                    "\n            "
-                                ),
-                              ]
-                            ),
-                          ]
-                        },
-                      }
-                    : null,
-                  !_vm.retailurl
-                    ? {
                         key: "item.tracking",
                         fn: function (props) {
                           return [
@@ -21574,8 +21490,18 @@ var render = function () {
                                             [
                                               _c("v-text-field", {
                                                 attrs: {
+                                                  rules: [
+                                                    function () {
+                                                      return (
+                                                        !!_vm.addItem.weigh ||
+                                                        "This field is required"
+                                                      )
+                                                    },
+                                                  ],
                                                   label: "weight",
                                                   required: "",
+                                                  placeholder: "4",
+                                                  suffix: "kg",
                                                 },
                                                 model: {
                                                   value: _vm.addItem.weight,
@@ -21819,40 +21745,6 @@ var render = function () {
                 ]
               },
               proxy: true,
-            },
-            {
-              key: "item.actions",
-              fn: function (ref) {
-                var item = ref.item
-                return [
-                  _c(
-                    "v-icon",
-                    {
-                      staticClass: "mr-2",
-                      attrs: { small: "" },
-                      on: {
-                        click: function ($event) {
-                          return _vm.editItem(item)
-                        },
-                      },
-                    },
-                    [_vm._v("\n          mdi-pencil\n        ")]
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "v-icon",
-                    {
-                      attrs: { small: "" },
-                      on: {
-                        click: function ($event) {
-                          return _vm.deleteItem(item)
-                        },
-                      },
-                    },
-                    [_vm._v("\n          mdi-delete\n        ")]
-                  ),
-                ]
-              },
             },
             {
               key: "header",

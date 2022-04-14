@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Actions\OnboardShipment;
 use App\Contracts\Actions\AssociatesProductsToOrder;
 use App\Models\Order;
+use App\Models\Shipment;
 use App\Services\OrderService;
 use Illuminate\Http\Request;
 
@@ -64,7 +65,7 @@ class OrderController extends Controller
     /**
      * @param Request $request
      * @param OnboardShipment $onboardShipment
-     * @return \App\Models\Shipment
+     * @return Shipment
      */
     public function addShipment(Request $request, OnboardShipment $onboardShipment)
     {

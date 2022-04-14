@@ -12,22 +12,13 @@
         hide-default-header
       >
         <template #top>
-          <v-toolbar
-            flat
-          >
+          <v-toolbar flat>
             <v-toolbar-title v-if="submitAction === 'orders.products.add'">
               Order number : {{ order.number }}
             </v-toolbar-title>
-            <v-divider
-              class="mx-4"
-              inset
-              vertical
-            />
+            <v-divider class="mx-4" inset vertical />
             <v-spacer />
-            <v-dialog
-              v-model="dialog"
-              max-width="500px"
-            >
+            <v-dialog v-model="dialog" max-width="500px">
               <template #activator="{ on, attrs }">
                 <v-btn
                   color="primary"
@@ -52,8 +43,11 @@
                       <v-col cols="12" lg="8">
                         <v-text-field
                           v-model="addItem.weight"
+                          :rules="[() => !!addItem.weigh || 'This field is required']"
                           label="weight"
                           required
+                          placeholder="4"
+                          suffix="kg"
                         />
 
                         <v-select
@@ -122,21 +116,6 @@
             </v-dialog>
           </v-toolbar>
         </template>
-        <template #item.actions="{ item }">
-          <v-icon
-            small
-            class="mr-2"
-            @click="editItem(item)"
-          >
-            mdi-pencil
-          </v-icon>
-          <v-icon
-            small
-            @click="deleteItem(item)"
-          >
-            mdi-delete
-          </v-icon>
-        </template>
 
         <template #header="{ props, on }">
           <thead>
@@ -163,6 +142,7 @@
           </v-chip>
         </template>
       </v-data-table>
+
       <div class="text-center pt-2">
         <v-btn v-if="shipment.length" color="primary" @click="setShipment">
           Add shipment
@@ -177,6 +157,29 @@ import relatedProductMixin from '../../mixins/relatedProductMixin'
 export default {
   name: 'RelatedProducts',
   mixins: [relatedProductMixin],
+
+  data: () => ({
+    disabledCount: 0,
+  }),
+  created() {
+    const self = this
+    this.enrichedOrderProductsItem.map(item => {
+      if (item.disabled) self.disabledCount += 1
+    })
+  },
+  methods: {
+    selectAllToggle(props) {
+      if(this.shipment.length !== this.enrichedOrderProductsItem.length - this.disabledCount) {
+        this.shipment = []
+        const self = this
+        props.items.forEach(item => {
+          if(!item.disabled) {
+            self.shipment.push(item)
+          }
+        })
+      } else this.shipment = []
+    }
+  }
 }
 </script>
 
